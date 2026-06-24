@@ -1,17 +1,10 @@
 # CLAUDE.md
 
-<!--
-  This is a generic, reusable template. Copy it to a project root and fill in the
-  <angle-bracket> placeholders. Delete any section that doesn't apply.
+<!-- Generic template: fill in <angle-bracket> placeholders, delete sections that don't apply.
+     This whole file (comments included) loads into EVERY session — keep it lean. For each line
+     ask "would removing this cause a mistake?" If not, cut it. Don't restate what the model can
+     infer from the code. -->
 
-  Guiding rule (from Anthropic's own docs): this file is loaded into EVERY session,
-  so keep it short and high-signal. For each line ask:
-  "Would removing this cause Claude to make a mistake?" If not, cut it.
-  Target < 200 lines. A bloated file causes Claude to ignore the rules that matter.
-
-  Include things Claude can't infer from the code. Do NOT restate standard language
-  conventions, document the codebase file-by-file, or paste API docs (link instead).
--->
 
 ## Project overview
 
@@ -33,28 +26,21 @@
 
 ## Commands
 
-<!-- Only commands Claude can't guess from package.json/Makefile. Keep the canonical few. -->
+<!-- Only the canonical few Claude can't guess. Lint/typecheck/format belong inside Build. -->
 
-| Task      | Command                                                      |
-| --------- | ----------------------------------------------------------- |
-| Dev       | `<run locally>`                                             |
-| Build     | `<build>`                                                   |
-| Test      | `<run the full suite>`                                      |
-| Lint      | `<lint>`                                                    |
-| Types     | `<typecheck>`                                               |
-| Format    | `<format>`                                                  |
-| **Gate**  | `<single command that runs lint + types + tests + build>`   |
+| Task     | Command                                              |
+| -------- | ---------------------------------------------------- |
+| Dev      | `<run locally>`                                      |
+| Build    | `<build — includes lint, typecheck, format check>`  |
+| Test     | `<run the full suite>`                               |
+| **Gate** | `<one command: build + test, run before pushing>`    |
 
-> **Gate** is the one canonical command to run before claiming work is done or pushing.
-> Make it match what CI/the pre-push hook runs, so "passes locally" means "passes CI".
+> **Gate** is the canonical pre-push check. Make it match CI so "passes locally" means "passes CI".
 
 ## Working principles
 
-<!--
-  Stack-agnostic behavioral rules. Adapted from the widely-used "Karpathy guidelines"
-  (community-distilled from Karpathy's notes on where coding agents fail). These target
-  the common failure modes: silent wrong assumptions, over-engineering, scope creep.
--->
+<!-- Stack-agnostic behavioral rules (the "Karpathy guidelines"): target the common failure
+     modes — silent wrong assumptions, over-engineering, scope creep. -->
 
 - **Think before coding.** State assumptions explicitly. If a request has multiple reasonable
   interpretations, surface them and ask — don't silently pick one. Push back when something
@@ -62,8 +48,8 @@
 - **Simplicity first.** Write the minimum code that solves the problem. No speculative features,
   no abstractions for single-use code, no error handling for cases that can't occur. Ask whether
   a senior engineer would find the solution overcomplicated.
-- **Surgical changes.** Every changed line should trace to the request. Don't refactor or "improve"
-  nearby code, and don't remove pre-existing dead code, unless asked.
+- **Surgical changes.** Every changed line should trace to the request — but it's fine to refactor
+  or improve nearby code and remove pre-existing dead code where there's clear room for improvement.
 - **Goal-driven execution.** Turn the request into verifiable success criteria, state a brief plan
   for complex tasks, then loop until the criteria are met.
 
@@ -107,25 +93,9 @@
 
 ### Commit messages
 
-Follow [Conventional Commits](https://www.conventionalcommits.org/): `type(scope): summary`
-
-- **Format:** `<type>[optional scope]: <description>`, an optional body, then optional footers.
-- **Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
-- **Summary:** imperative mood ("add", not "added"/"adds"), lowercase, no trailing period, ≤ 72 chars.
-- **Body** (when needed): explain *what* and *why*, not *how*; wrap at ~72 cols.
-- **Breaking changes:** add `!` after the type/scope (`feat!:`) or a `BREAKING CHANGE:` footer.
-- **One logical change per commit.** Don't bundle unrelated changes.
-
-Example:
-
-```
-feat(auth): add token refresh on 401 responses
-
-Sessions silently expired after 1h. Retry once with a refreshed
-token before surfacing the error to the caller.
-
-Closes #123
-```
+Follow [Conventional Commits](https://www.conventionalcommits.org/): `type(scope): summary` in
+lowercase imperative mood (`feat`, `fix`, `docs`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`).
+Mark breaking changes with `!` (`feat!:`) or a `BREAKING CHANGE:` footer. One logical change per commit.
 
 ## Security & safety
 
@@ -151,16 +121,10 @@ Closes #123
 - <e.g. "The build caches aggressively — run `<clean cmd>` if you see stale output.">
 - <e.g. "Module X looks unused but is loaded dynamically; don't delete it.">
 
-## Further context (progressive disclosure)
+## Further context
 
-<!--
-  Keep this file lean. This file is about *how to work*; the *what we're building* (design,
-  specs, decisions) is the design source of truth below. Link detailed, occasionally-needed
-  docs so the agent loads them only when relevant. Nested CLAUDE.md files in subdirs are
-  pulled in on demand for work in those areas.
--->
+<!-- This file is *how to work*; the *what we're building* lives in the wiki. Link out so the
+     agent loads detail only when needed. Nested CLAUDE.md files in subdirs load on demand. -->
 
-- **Design source of truth:** <e.g. @docs/ or @wiki/index.md — specs, ADRs, what we're building>
-- Architecture details: @docs/architecture.md
+- **Design source of truth:** @wiki/index.md — specs, architecture, ADRs, and current status.
 - Contribution guide: @CONTRIBUTING.md
-- <Other: @docs/...>
