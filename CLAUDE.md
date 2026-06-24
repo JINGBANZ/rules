@@ -1,14 +1,7 @@
 # CLAUDE.md
 
-<!-- Generic template: fill in <angle-bracket> placeholders, delete sections that don't apply.
-     This whole file (comments included) loads into EVERY session — keep it lean. For each line
-     ask "would removing this cause a mistake?" If not, cut it. Don't restate what the model can
-     infer from the code. -->
-
-
 ## Project overview
 
-<!-- WHY this exists + WHAT it is, in 2-4 sentences. The mental model, not a feature list. -->
 <One-paragraph description: what this project does, who it's for, and the core problem it solves.>
 
 - **Stack:** <languages, frameworks, runtime, package manager, e.g. TypeScript / Node 20 / pnpm>
@@ -26,8 +19,6 @@
 
 ## Commands
 
-<!-- Only the canonical few Claude can't guess. Lint/typecheck/format belong inside Build. -->
-
 | Task     | Command                                              |
 | -------- | ---------------------------------------------------- |
 | Dev      | `<run locally>`                                      |
@@ -38,9 +29,6 @@
 > **Gate** is the canonical pre-push check. Make it match CI so "passes locally" means "passes CI".
 
 ## Working principles
-
-<!-- Stack-agnostic behavioral rules (the "Karpathy guidelines"): target the common failure
-     modes — silent wrong assumptions, over-engineering, scope creep. -->
 
 - **Think before coding.** State assumptions explicitly. If a request has multiple reasonable
   interpretations, surface them and ask — don't silently pick one. Push back when something
@@ -55,8 +43,6 @@
 
 ## Workflow
 
-<!-- HOW Claude should work in THIS repo. Keep to the project-specific mechanics. -->
-
 - **Explore → plan → implement.** For non-trivial changes, understand the relevant code and
   agree on an approach before editing. Skip planning only for small, well-scoped fixes.
 - **Evidence, not assertion.** Before claiming work is done, run the **Gate** command and show the
@@ -67,11 +53,6 @@
   before finishing.
 
 ## Code style
-
-<!--
-  Let linters and formatters own mechanical style — don't restate rules a tool enforces.
-  List ONLY project-specific conventions that differ from the ecosystem default.
--->
 
 - Style and formatting are enforced by `<linter/formatter>`; run it before finishing.
 - Document non-obvious decisions in comments — explain *why*, not *what*.
@@ -105,8 +86,6 @@ Mark breaking changes with `!` (`feat!:`) or a `BREAKING CHANGE:` footer. One lo
 
 ## Never
 
-<!-- Hard prohibitions. Short, absolute, and enforced — these are the lines worth being blunt about. -->
-
 - **Never** skip pre-commit/pre-push hooks (e.g. `--no-verify`) or the **Gate**.
 - **Never** commit secrets, `.env` files, or credentials.
 - **Never** commit directly to the default branch; open a PR.
@@ -116,15 +95,10 @@ Mark breaking changes with `!` (`feat!:`) or a `BREAKING CHANGE:` footer. One lo
 
 ## Gotchas
 
-<!-- Hard-won, non-obvious knowledge that has bitten people before. Highest value per line. -->
-
 - <e.g. "The build caches aggressively — run `<clean cmd>` if you see stale output.">
 - <e.g. "Module X looks unused but is loaded dynamically; don't delete it.">
 
 ## Further context
-
-<!-- This file is *how to work*; the *what we're building* lives in the wiki. Link out so the
-     agent loads detail only when needed. Nested CLAUDE.md files in subdirs load on demand. -->
 
 - **Design source of truth:** @wiki/index.md — specs, architecture, ADRs, and current status.
 - Contribution guide: @CONTRIBUTING.md
