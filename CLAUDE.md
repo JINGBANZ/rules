@@ -35,14 +35,18 @@
 
 <!-- Only commands Claude can't guess from package.json/Makefile. Keep the canonical few. -->
 
-| Task  | Command                       |
-| ----- | ----------------------------- |
-| Dev   | `<run locally>`               |
-| Build | `<build>`                     |
-| Test  | `<run the full suite>`        |
-| Lint  | `<lint>`                      |
-| Types | `<typecheck>`                 |
-| Format| `<format>`                    |
+| Task      | Command                                                      |
+| --------- | ----------------------------------------------------------- |
+| Dev       | `<run locally>`                                             |
+| Build     | `<build>`                                                   |
+| Test      | `<run the full suite>`                                      |
+| Lint      | `<lint>`                                                    |
+| Types     | `<typecheck>`                                               |
+| Format    | `<format>`                                                  |
+| **Gate**  | `<single command that runs lint + types + tests + build>`   |
+
+> **Gate** is the one canonical command to run before claiming work is done or pushing.
+> Make it match what CI/the pre-push hook runs, so "passes locally" means "passes CI".
 
 ## Working principles
 
@@ -69,11 +73,11 @@
 
 - **Explore → plan → implement.** For non-trivial changes, understand the relevant code and
   agree on an approach before editing. Skip planning only for small, well-scoped fixes.
-- **Always verify before claiming done.** Run the relevant tests/build/lint and show the output.
-  Don't assert success without evidence.
-- **Match existing patterns.** Find a similar feature already in the codebase and follow its
-  structure, naming, and conventions instead of introducing new ones.
-- **Prefer running focused tests** over the whole suite while iterating, then run the full suite
+- **Evidence, not assertion.** Before claiming work is done, run the **Gate** command and show the
+  output. Don't say "it works" without the passing result to back it.
+- **Match existing patterns.** Before adding a file, find where similar code already lives and mirror
+  its structure, naming, and idioms. Don't impose a pattern the repo doesn't already use.
+- **Prefer running focused tests** over the whole suite while iterating, then run the full **Gate**
   before finishing.
 
 ## Code style
@@ -84,6 +88,7 @@
 -->
 
 - Style and formatting are enforced by `<linter/formatter>`; run it before finishing.
+- Document non-obvious decisions in comments — explain *why*, not *what*.
 - <Project-specific convention 1, e.g. "Use the `Result` type for fallible functions; no throw.">
 - <Project-specific convention 2, e.g. "Import from package roots, never deep paths.">
 
@@ -128,6 +133,17 @@ Closes #123
 - Validate and sanitize all external input; treat user data as untrusted.
 - <Domain-specific constraint, e.g. "Never run destructive DB migrations without confirmation.">
 
+## Never
+
+<!-- Hard prohibitions. Short, absolute, and enforced — these are the lines worth being blunt about. -->
+
+- **Never** skip pre-commit/pre-push hooks (e.g. `--no-verify`) or the **Gate**.
+- **Never** commit secrets, `.env` files, or credentials.
+- **Never** commit directly to the default branch; open a PR.
+- **Never** `git push --force` to a shared branch.
+- **Never** modify or delete a test to make a broken change pass — fix the code, not the test.
+- **Never** suppress an error or warning to hide a problem — address the root cause.
+
 ## Gotchas
 
 <!-- Hard-won, non-obvious knowledge that has bitten people before. Highest value per line. -->
@@ -138,10 +154,13 @@ Closes #123
 ## Further context (progressive disclosure)
 
 <!--
-  Keep this file lean. Put detailed, occasionally-needed docs in separate files and link
-  them so Claude loads them only when relevant.
+  Keep this file lean. This file is about *how to work*; the *what we're building* (design,
+  specs, decisions) is the design source of truth below. Link detailed, occasionally-needed
+  docs so the agent loads them only when relevant. Nested CLAUDE.md files in subdirs are
+  pulled in on demand for work in those areas.
 -->
 
+- **Design source of truth:** <e.g. @docs/ or @wiki/index.md — specs, ADRs, what we're building>
 - Architecture details: @docs/architecture.md
 - Contribution guide: @CONTRIBUTING.md
 - <Other: @docs/...>
