@@ -23,9 +23,3 @@ to begin from this line alone.>
 ## Not yet built
 
 - <Planned thing.> — <one line on intent.>
-
-## Known drift
-
-<Anything where two facts currently disagree and haven't been reconciled. Empty is the goal.>
-
-- <none>
