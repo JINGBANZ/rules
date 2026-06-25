@@ -61,6 +61,32 @@ Section-by-section notes for filling in the template:
   status) lives in the wiki. Link out so the agent loads detail only when needed. Nested `CLAUDE.md`
   files in subdirectories are pulled in on demand when the agent works in those areas.
 
+## The `wiki/` template
+
+`CLAUDE.md` is *how to work in the repo*; the **wiki** is *what we're building* — the project's design
+source of truth (architecture, decisions, current status), written so a fresh agent or human can pick
+the project up mid-stream. The `wiki/` folder here is a reusable starting point you can copy into any
+project, and `wiki/CLAUDE.md` is the rule that tells coding agents how to keep it healthy as it grows.
+
+How to use it:
+
+1. Copy the `wiki/` folder to the root of your project.
+2. Fill in `wiki/index.md` and `wiki/status.md` — replace the `<angle-bracket>` placeholders. Leave
+   `wiki/CLAUDE.md` as-is; it's a generic rule, not a fill-in template.
+3. Add core pages (`architecture.md`, etc.) only as they earn their place — don't pre-create stubs.
+4. Decisions: log load-bearing choices (what + why, including the rejected alternative) in
+   `wiki/decisions.md` — a single running log. There's no ADR folder by design; a growing set of
+   numbered decision files is a maintenance burden and a drift source, so keep it to one lean page.
+5. Point the root `CLAUDE.md` at the wiki under **Further context** (e.g. `@wiki/index.md`) so agents
+   load design detail only when they need it.
+
+`wiki/CLAUDE.md` is a nested instruction file: Claude Code loads it on demand when an agent works under
+`wiki/`. It distills industry standards — docs-as-code, single-source-of-truth, present-tense reference
+docs, a single lean decision log (no ADR sprawl), and context engineering for agents — into conventions
+that fight the two ways a knowledge base rots: **fossilization** (dated copies, change-narration) and
+**fragmentation** (drifting stubs). See the "Further reading" links at the bottom of that file for the
+sources.
+
 ## What's in this repo
 
 | File | Purpose |
@@ -68,3 +94,7 @@ Section-by-section notes for filling in the template:
 | `CLAUDE.md` | The template — comment-free, placeholder-driven agent instructions. |
 | `AGENTS.md` | Symlink to `CLAUDE.md` for AGENTS.md-compatible agents. |
 | `README.md` | This file — how to use and fill in the template. |
+| `wiki/CLAUDE.md` | Generic rule for maintaining a project wiki (the reusable deliverable). |
+| `wiki/AGENTS.md` | Symlink to `wiki/CLAUDE.md` for cross-tool agents. |
+| `wiki/index.md`, `wiki/status.md` | Navigation index and mid-stream handoff page (fill-in templates). |
+| `wiki/decisions.md` | The decision log — load-bearing choices and their rationale (one page, no ADR folder). |
