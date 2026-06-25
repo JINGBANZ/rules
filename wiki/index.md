@@ -11,11 +11,12 @@
 
 ## Core pages
 
-<List one line per page: `[name](./name.md) — what it covers`. Delete this placeholder block and add
-pages only as they earn their place (see [`CLAUDE.md`](./CLAUDE.md) → Convention 7). Typical starters:>
+<Add one line per page as `[name](./name.md) — what it covers`, only as pages earn their place (see
+[`CLAUDE.md`](./CLAUDE.md) → Convention 7). The starters below are plain text, not links, so a
+freshly-copied wiki has no dangling links — make each a real link once the page exists.>
 
-- [architecture.md](./architecture.md) — <the vision, the main components, how they fit, key boundaries.>
-- [build-and-run.md](./build-and-run.md) — <toolchain, how to build/run/test locally, operational notes.>
+- `architecture.md` — the vision, the main components, how they fit, key boundaries.
+- `build-and-run.md` — toolchain, how to build/run/test locally, operational notes.
 
 ## Decisions
 

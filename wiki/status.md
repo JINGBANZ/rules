@@ -18,7 +18,7 @@ to begin from this line alone.>
 
 <Each item lists `file → what it is`, so a reader can verify by opening the file. Keep present-tense.>
 
-- `<src/path.ext>` — <what it does.>
+- `<path>` — <what it is.>
 
 ## Not yet built
 

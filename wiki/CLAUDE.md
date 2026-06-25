@@ -56,6 +56,10 @@ schemas, signatures, config values, exact constants — lives in the code. Point
 drifts the moment the code changes; a pointer survives. Same rule for facts that live in config
 (`package.json`, `pyproject.toml`, etc.): link, don't restate.
 
+For diagrams, prefer text that diffs and renders in-repo (Mermaid in Markdown, or C4/PlantUML) over a
+committed image binary — a PNG fossilizes exactly the way
+[Convention 1](#1-edit-in-place-never-append-dated-or-versioned-copies) warns against.
+
 ### 5. Cross-reference; don't duplicate.
 
 Document each fact in exactly one page. If another page needs it, **link** to it. Duplication causes
@@ -66,6 +70,11 @@ drift: when one copy updates and the other doesn't, the wiki lies.
 If you can't write at least three meaningful sentences about a topic, don't create a page for it. A
 stub with a `TODO` is worse than a missing page: the stub gets indexed and read, while a missing page
 prompts you to add the content where it belongs.
+
+The structural scaffold pages — `index.md`, `status.md`, `decisions.md` — are the deliberate exception:
+they exist for structure, not content, so they're present from the start even when nearly empty. An
+empty `decisions.md` is fine until the first decision; a `status.md` still full of `<placeholders>`
+after work has started is the stub this rule forbids.
 
 ### 7. Default to extending a page. Promote to a new page only when earned.
 
@@ -81,7 +90,13 @@ Start as a section inside an existing page. Promote it to its own page **only wh
   refinement of something that already exists.
 
 **Concrete-noun test:** can you finish "X is a ___" with a non-generic answer? "The sandbox is a
-worktree-isolated process boundary" → page-worthy. "Good error handling matters" → not.
+worktree-isolated process boundary" → page-worthy; "the eval harness is the offline scorer for model
+outputs" → page-worthy; "good error handling matters" → not.
+
+**Cold start:** this rule governs *splitting*, not whether the first page may exist. On a brand-new
+wiki, create the first core page (usually `architecture.md`) as soon as you can write three meaningful
+sentences about the system ([Convention 6](#6-dont-create-empty-pages)) — don't wait for a promotion
+trigger.
 
 The wiki stays flat (`wiki/*.md`) until flat stops working. Don't pre-create directories; taxonomy
 emerges from the material. **Whenever you add, rename, or remove a page, update
@@ -109,17 +124,26 @@ persist — [Convention 3](#3-write-in-the-present-dont-narrate-refactors)'s "de
 does **not** apply to it, precisely because the rejected alternative is the thing you don't want to
 lose.
 
+**Supersede; don't rewrite.** Date each entry so "newest last" is verifiable. When a later decision
+reverses an earlier one, leave the original in place and append `**Superseded by:** <new entry>` to it
+(and `**Supersedes:** <old entry>` on the new one). This is the backward-looking complement to each
+entry's `Revisit if:` line — it recovers the one thing a numbered ADR would carry (decision lifecycle),
+in a line rather than a folder, and it's what keeps a reversed decision from silently contradicting the
+present-tense core pages.
+
 ## Keep-in-sync checklist
 
 Run this whenever you land a change that alters behavior, structure, or a documented fact — in the
-**same PR** as the code, not as a later cleanup. Doc updates ride with the change that caused them; a PR
-that changes documented behavior without a doc change is incomplete. Stale docs erode trust faster than
-they can rebuild it — every agent who acts on a fossilized claim makes the next one trust the wiki less.
+**same change (PR or commit)** as the code, not as a later cleanup. Doc updates ride with the change
+that caused them; a change that alters documented behavior without a doc update is incomplete. Stale
+docs erode trust faster than they can rebuild it — every agent who acts on a fossilized claim makes the
+next one trust the wiki less.
 
 1. **Update [`status.md`](./status.md).** Move newly-built things from "Not yet built" to "Built" with
-   a file pointer. Update the current phase and the next action. This is the page a fresh agent reads
-   first.
-2. **Update the relevant core pages** in place ([Convention 1](#1-edit-in-place-never-append-dated-or-versioned-copies)),
+   a file pointer. If a "Not yet built" item was abandoned rather than built, delete it (and log why in
+   [`decisions.md`](./decisions.md) if the call was load-bearing). Update the current phase and the next
+   action. This is the page a fresh agent reads first.
+2. **Create or update the relevant core page(s)** in place ([Convention 1](#1-edit-in-place-never-append-dated-or-versioned-copies)),
    in present tense ([Convention 3](#3-write-in-the-present-dont-narrate-refactors)).
 3. **Log any load-bearing decision** in [`decisions.md`](./decisions.md) ([Convention 8](#8-log-load-bearing-decisions-in-one-place-dont-accumulate-decision-files)).
 4. **If a page was added, renamed, or removed, update [`index.md`](./index.md).**
@@ -167,6 +191,9 @@ rather than silently rewriting the page to match — the page may encode intent 
 The conventions above align with these standards; consult them when a situation isn't covered here.
 
 - **AGENTS.md** — the open, cross-tool agent-instructions standard: <https://agents.md/>
+- **llms.txt** — a curated navigation map for agents; `index.md` plays this role *inside* the repo,
+  while a published `llms.txt` targets an external docs site (out of scope for an in-repo wiki):
+  <https://llmstxt.org/>
 - **Architecture Decision Records** — the standard heavier form, only if a project ever genuinely
   outgrows the decision log: <https://adr.github.io/>
 - **Diátaxis** — a vocabulary for doc types (tutorial / how-to / reference / explanation):

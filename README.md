@@ -57,8 +57,8 @@ Section-by-section notes for filling in the template:
 - **Security & safety** — Secrets handling, input validation, and domain-specific hard constraints.
 - **Never** — Hard prohibitions. Short, absolute, and enforced — the lines worth being blunt about.
 - **Gotchas** — Hard-won, non-obvious knowledge that has bitten people before. Highest value per line.
-- **Further context** — `CLAUDE.md` is *how to work*; the *what we're building* (design, specs, ADRs,
-  status) lives in the wiki. Link out so the agent loads detail only when needed. Nested `CLAUDE.md`
+- **Further context** — `CLAUDE.md` is *how to work*; the *what we're building* (design, specs,
+  decisions, status) lives in the wiki. Link out so the agent loads detail only when needed. Nested `CLAUDE.md`
   files in subdirectories are pulled in on demand when the agent works in those areas.
 
 ## The `wiki/` template

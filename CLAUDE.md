@@ -100,5 +100,5 @@ Mark breaking changes with `!` (`feat!:`) or a `BREAKING CHANGE:` footer. One lo
 
 ## Further context
 
-- **Design source of truth:** @wiki/index.md — specs, architecture, ADRs, and current status.
-- Contribution guide: @CONTRIBUTING.md
+- **Design source of truth:** @wiki/index.md — specs, architecture, decisions, and current status.
+- Contribution guide: @CONTRIBUTING.md (if present)
