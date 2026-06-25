@@ -20,7 +20,7 @@ archive. Two failure modes to design against:
 
 Every convention below serves those two principles, and rests on a few industry standards: docs-as-code
 (Markdown in the repo, changed via PR, reviewed like code), single-source-of-truth, present-tense
-reference docs, and context engineering for agents. See [Further reading](#further-reading).
+reference docs, and context engineering for agents.
 
 ## Conventions
 
@@ -174,30 +174,8 @@ Documentation is context. A bloated page costs tokens on every read and buries t
 smallest set of high-signal words, one canonical example over an exhaustive list of edge cases, and a
 link over a restated paragraph. Keep `index.md` a lightweight map, not a second copy of the content.
 
-## Cross-tool compatibility
-
-This file is named `CLAUDE.md` because Claude Code reads that name; other agents (Cursor, Codex,
-Copilot, Gemini CLI) read the vendor-neutral `AGENTS.md`. Keep a single source of truth:
-[`AGENTS.md`](./AGENTS.md) is a symlink to this file. Edit only `CLAUDE.md`; never let the two diverge.
-
 ## If you get stuck
 
 If a wiki page says one thing and the code says another, and no decision record explains the gap, that's
 a drift signal. Treat the code as the ground truth for *what*, but flag the contradiction to a human
 rather than silently rewriting the page to match — the page may encode intent the code has drifted from.
-
-## Further reading
-
-The conventions above align with these standards; consult them when a situation isn't covered here.
-
-- **AGENTS.md** — the open, cross-tool agent-instructions standard: <https://agents.md/>
-- **llms.txt** — a curated navigation map for agents; `index.md` plays this role *inside* the repo,
-  while a published `llms.txt` targets an external docs site (out of scope for an in-repo wiki):
-  <https://llmstxt.org/>
-- **Architecture Decision Records** — the standard heavier form, only if a project ever genuinely
-  outgrows the decision log: <https://adr.github.io/>
-- **Diátaxis** — a vocabulary for doc types (tutorial / how-to / reference / explanation):
-  <https://diataxis.fr/>
-- **Docs-as-code** — Markdown in the repo, reviewed via PR: <https://www.writethedocs.org/guide/docs-as-code/>
-- **Effective context engineering for agents** — why an entry point, file pointers, and conciseness
-  matter: <https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents>

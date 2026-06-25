@@ -84,8 +84,15 @@ How to use it:
 `wiki/`. It distills industry standards — docs-as-code, single-source-of-truth, present-tense reference
 docs, a single lean decision log (no ADR sprawl), and context engineering for agents — into conventions
 that fight the two ways a knowledge base rots: **fossilization** (dated copies, change-narration) and
-**fragmentation** (drifting stubs). See the "Further reading" links at the bottom of that file for the
-sources.
+**fragmentation** (drifting stubs).
+
+Sources for those standards (kept here, not in the agent-loaded rule):
+[AGENTS.md](https://agents.md/),
+[docs-as-code](https://www.writethedocs.org/guide/docs-as-code/),
+[Diátaxis](https://diataxis.fr/),
+[ADRs](https://adr.github.io/),
+[llms.txt](https://llmstxt.org/), and
+[effective context engineering for agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents).
 
 ## What's in this repo
 
