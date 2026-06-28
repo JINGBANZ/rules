@@ -51,6 +51,10 @@
   its structure, naming, and idioms. Don't impose a pattern the repo doesn't already use.
 - **Prefer running focused tests** over the whole suite while iterating, then run the full **Gate**
   before finishing.
+- **Open a PR when the work is done.** Once the change is complete and the **Gate** passes, commit
+  to a branch and open a pull request without waiting to be asked. Don't leave finished work
+  uncommitted on a local branch — see [Repository etiquette](#repository-etiquette) for branch and
+  PR conventions.
 
 ## Code style
 
