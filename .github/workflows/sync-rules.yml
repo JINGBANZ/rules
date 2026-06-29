@@ -1,0 +1,31 @@
+name: Sync shared rules
+
+# Propagate shared-rules.md to every consuming repo as a pull request whenever it changes on main.
+# Setup: create a fine-grained PAT (Contents + Pull requests: read/write on the target repos) and add
+# it as the RULES_SYNC_TOKEN secret. Fill in the target repos in .github/sync.yml.
+on:
+  push:
+    branches: [main]
+    paths:
+      - shared-rules.md
+      - .github/sync.yml
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # TODO: pin to a full commit SHA before enabling (supply-chain best practice).
+      - name: Sync shared-rules.md to target repos
+        uses: step-security/repo-file-sync-action@v2
+        with:
+          GH_PAT: ${{ secrets.RULES_SYNC_TOKEN }}
+          CONFIG_PATH: .github/sync.yml
+          COMMIT_PREFIX: "chore: "
+          PR_BODY: |
+            Automated sync of `shared-rules.md` from the `rules` repo.
+            Review and merge to adopt the latest shared engineering rules.
