@@ -60,9 +60,7 @@ the rules.
 4. Pin the action to a full commit SHA in `sync-rules.yml` (replace `@v2`) before enabling.
 
 **To onboard a new repo:** add one line to `.github/sync.yml`, grant the PAT access to it, and add the
-`@shared-rules.md` import to its `CLAUDE.md`. See
-[`docs/superpowers/specs/2026-06-29-rules-sync-design.md`](./docs/superpowers/specs/2026-06-29-rules-sync-design.md)
-for the full design and rationale.
+`@shared-rules.md` import to its `CLAUDE.md`.
 
 ## Authoring guidance
 
@@ -137,7 +135,6 @@ Sources for those standards (kept here, not in the agent-loaded rule):
 | `README.md` | This file — how to use and fill in the template. |
 | `.github/sync.yml` | Sync config: which files go to which repos. |
 | `.github/workflows/sync-rules.yml` | Workflow that opens PRs to sync `shared-rules.md` to consuming repos. |
-| `docs/superpowers/specs/` | Design docs (e.g. the rules-sync design). |
 | `wiki/CLAUDE.md` | Generic rule for maintaining a project wiki (the reusable deliverable). |
 | `wiki/AGENTS.md` | Symlink to `wiki/CLAUDE.md` for cross-tool agents. |
 | `wiki/index.md`, `wiki/status.md` | Navigation index and mid-stream handoff page (fill-in templates). |
