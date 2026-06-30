@@ -1,0 +1,11 @@
+# Which files sync to which repos. Read by repo-file-sync-action on every push to main.
+#
+# To onboard a repo: add it under `repos` (one line), grant the RULES_SYNC_TOKEN PAT access to it,
+# and add `@shared-rules.md` to that repo's CLAUDE.md. Replace the placeholders below with real repos.
+group:
+  repos: |
+    <owner>/<repo-a>
+    <owner>/<repo-b>
+  files:
+    - source: shared-rules.md
+      dest: shared-rules.md

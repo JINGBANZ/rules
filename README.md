@@ -9,8 +9,10 @@ file that loads into every session.
 
 ## How to use it
 
-1. Copy `CLAUDE.md` to the root of your project.
-2. Replace every `<angle-bracket>` placeholder with the real value for that project.
+1. Copy `CLAUDE.md` **and** `shared-rules.md` to the root of your project.
+2. Replace every `<angle-bracket>` placeholder in `CLAUDE.md` with the real value for that project.
+   Leave `shared-rules.md` as-is — it's universal and kept in sync automatically (see
+   [Keeping rules in sync across repos](#keeping-rules-in-sync-across-repos)).
 3. Delete any section that doesn't apply — there are no required sections.
 4. (Optional) Add the `AGENTS.md` symlink so non-Claude agents read the same file (see below).
 5. Keep it lean over time. Add a rule only when an agent makes a mistake that rule would have
@@ -31,6 +33,35 @@ symlinks need `core.symlinks=true`; if you have Windows collaborators, instead m
 one-line file containing `@AGENTS.md` (Claude Code's import syntax) and keep `AGENTS.md` as the real
 file.
 
+## Keeping rules in sync across repos
+
+`CLAUDE.md` mixes two kinds of content: **project-specific** rules (stack, commands, testing — the
+`<placeholder>` parts) and **universal** rules that are identical in every repo (working principles,
+the workflow, commit format, the generic security rules, the hard "never"s). The universal half lives
+in its own file, `shared-rules.md`, which each repo's `CLAUDE.md` pulls in with an `@shared-rules.md`
+import. Because that file has no placeholders, it can be byte-identical everywhere — and kept that way
+automatically.
+
+When `shared-rules.md` changes on `main`, a GitHub Action
+([`step-security/repo-file-sync-action`](https://github.com/step-security/repo-file-sync-action))
+copies it into every consuming repo and **opens a pull request** there for the owner to review and
+merge. The config is `.github/sync.yml` (the list of target repos) and
+`.github/workflows/sync-rules.yml` (the workflow). Project-specific `CLAUDE.md` content is never
+touched. The sync uses the **push model** — one workflow here fans out — because every consuming repo
+is under the same account; switch to a per-repo (pull) workflow only if repos owned by others adopt
+the rules.
+
+**One-time setup:**
+
+1. Create a fine-grained Personal Access Token with `Contents: read/write` and
+   `Pull requests: read/write` on the target repos.
+2. Add it as the `RULES_SYNC_TOKEN` secret in this repo (Settings → Secrets and variables → Actions).
+3. Fill in the real repo names in `.github/sync.yml`.
+4. Pin the action to a full commit SHA in `sync-rules.yml` (replace `@v2`) before enabling.
+
+**To onboard a new repo:** add one line to `.github/sync.yml`, grant the PAT access to it, and add the
+`@shared-rules.md` import to its `CLAUDE.md`.
+
 ## Authoring guidance
 
 Core principle: **`CLAUDE.md` loads into every session, so keep it lean.** For each line, ask
@@ -45,10 +76,10 @@ Section-by-section notes for filling in the template:
 - **Commands** — Only the canonical few an agent can't guess. Lint, typecheck, and format checks
   belong *inside* Build. The **Gate** is the single command to run before claiming work is done or
   pushing; make it match CI so "passes locally" means "passes CI".
-- **Working principles** — Stack-agnostic behavioral rules (the community "Karpathy guidelines"),
-  targeting the common agent failure modes: silent wrong assumptions, over-engineering, scope creep.
-  These are universal — keep them as-is across projects.
-- **Workflow** — How an agent should work in *this* repo; the project-specific mechanics.
+- **Shared rules** (`shared-rules.md`, imported via `@shared-rules.md`) — The universal,
+  stack-agnostic rules: working principles (the community "Karpathy guidelines"), the working/PR
+  workflow, commit format, the generic security rules, and the hard "never"s. You don't fill these in
+  per project — they're kept identical across repos by the sync; propose changes in the `rules` repo.
 - **Code style** — Let linters and formatters own mechanical style; don't restate rules a tool
   enforces. List only project-specific conventions that differ from the ecosystem default.
 - **Testing** — Framework, where tests live, expectations, and any non-obvious setup gotchas.
@@ -98,9 +129,12 @@ Sources for those standards (kept here, not in the agent-loaded rule):
 
 | File | Purpose |
 | --- | --- |
-| `CLAUDE.md` | The template — comment-free, placeholder-driven agent instructions. |
+| `CLAUDE.md` | The template — comment-free, placeholder-driven agent instructions. Imports `shared-rules.md`. |
+| `shared-rules.md` | Universal, stack-agnostic rules — identical across repos, kept in sync automatically. |
 | `AGENTS.md` | Symlink to `CLAUDE.md` for AGENTS.md-compatible agents. |
 | `README.md` | This file — how to use and fill in the template. |
+| `.github/sync.yml` | Sync config: which files go to which repos. |
+| `.github/workflows/sync-rules.yml` | Workflow that opens PRs to sync `shared-rules.md` to consuming repos. |
 | `wiki/CLAUDE.md` | Generic rule for maintaining a project wiki (the reusable deliverable). |
 | `wiki/AGENTS.md` | Symlink to `wiki/CLAUDE.md` for cross-tool agents. |
 | `wiki/index.md`, `wiki/status.md` | Navigation index and mid-stream handoff page (fill-in templates). |
