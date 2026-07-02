@@ -1,90 +1,137 @@
 # rules
 
-A generic, reusable [`CLAUDE.md`](./CLAUDE.md) template for coding-agent instructions, plus an
-[`AGENTS.md`](./AGENTS.md) symlink for cross-tool compatibility.
+Shared engineering rules for coding agents — one `AGENTS.md` per repo that Claude Code, Codex, and
+any AGENTS.md-compatible tool all read, with the universal half kept identical across repos by an
+automated sync.
 
-[`CLAUDE.md`](./CLAUDE.md) is kept comment-free so every line is a rule the agent reads. This README
-holds the guidance for *authoring and filling in* the template — the part that shouldn't live in the
-file that loads into every session.
+Agent instructions mix two kinds of content with different owners:
 
-## How to use it
+- **Universal rules** ([`shared-rules.md`](./shared-rules.md)) — working principles, workflow,
+  commit format, security basics, the hard "never"s. Identical in every repo; machine-synced.
+- **Project-specific context** — stack, commands, testing, gotchas. Authored per repo (mostly by the
+  agent itself, from the codebase); never touched by the sync.
 
-1. Copy `CLAUDE.md` to the root of your project.
-2. Replace every `<angle-bracket>` placeholder with the real value for that project.
-3. Delete any section that doesn't apply — there are no required sections.
-4. (Optional) Add the `AGENTS.md` symlink so non-Claude agents read the same file (see below).
-5. Keep it lean over time. Add a rule only when an agent makes a mistake that rule would have
-   prevented; prune rules that no longer earn their place.
+## How it works
 
-### Cross-tool compatibility (`AGENTS.md`)
+Each consuming repo carries three small files:
 
-`AGENTS.md` is the vendor-neutral open standard read by Cursor, Codex, Copilot, Gemini CLI, and
-others; Claude Code reads `CLAUDE.md`. To serve both from a single source of truth, this repo makes
-`AGENTS.md` a symlink to `CLAUDE.md`:
+| File | Role |
+| --- | --- |
+| `AGENTS.md` | The single instruction file. Starts with a machine-managed marker block holding the shared rules; project-specific sections follow. |
+| `CLAUDE.md` | One line — `@AGENTS.md` — so Claude Code loads the same file (it doesn't read `AGENTS.md` natively). |
+| `.github/workflows/sync-shared-rules.yml` | A ~15-line stub calling the reusable sync workflow in [JINGBANZ/workflows](https://github.com/JINGBANZ/workflows) weekly, and on demand. |
 
-```bash
-ln -s CLAUDE.md AGENTS.md
-```
+The reusable workflow fetches `shared-rules.md` from this repo (it's public — no token needed),
+splices it between the `<!-- shared-rules:begin -->` / `<!-- shared-rules:end -->` markers in
+`AGENTS.md`, and opens a pull request in the consuming repo if anything changed. It runs on the
+consuming repo's own `GITHUB_TOKEN` — there is no PAT to create, rotate, or grant per repo, and no
+central credential with write access to everything. It also self-heals: if someone edits inside the
+marker block, the next run opens a correcting PR.
 
-Git stores it as a real symlink (mode `120000`), so it clones correctly on macOS/Linux. On Windows,
-symlinks need `core.symlinks=true`; if you have Windows collaborators, instead make `CLAUDE.md` a
-one-line file containing `@AGENTS.md` (Claude Code's import syntax) and keep `AGENTS.md` as the real
-file.
+## Adopting the rules in a repo
+
+1. Copy [`templates/AGENTS.md`](./templates/AGENTS.md) and
+   [`templates/CLAUDE.md`](./templates/CLAUDE.md) to the project root.
+2. Copy [`templates/sync-shared-rules.yml`](./templates/sync-shared-rules.yml) to
+   `.github/workflows/`.
+3. In the repo settings, enable **Settings → Actions → General → Allow GitHub Actions to create and
+   approve pull requests** (the sync needs it to open PRs).
+4. Ask your coding agent to fill in the sections below the marker block in `AGENTS.md` from the
+   codebase; delete any section that doesn't apply. Don't touch the marker block itself.
+5. (Optional) Copy [`templates/wiki/`](./templates/wiki) as the design-docs starter (see
+   [The `wiki/` template](#the-wiki-template)).
+
+## Changing the shared rules
+
+Edit [`shared-rules.md`](./shared-rules.md) in a PR here, updating the marker block in
+[`templates/AGENTS.md`](./templates/AGENTS.md) in the same PR (verbatim copy between the markers).
+Once merged, every consuming repo receives the change as an automated PR at its next scheduled sync —
+or immediately via the sync workflow's **Run workflow** button in that repo.
+
+Add a rule only when an agent makes a mistake the rule would have prevented; prune rules that no
+longer earn their place. Every line loads into every session of every consuming repo.
+
+## One-time setup of the sync
+
+The reusable workflow's canonical home is
+`JINGBANZ/workflows/.github/workflows/sync-shared-rules.yml`; a bootstrap copy lives at
+[`templates/workflows-repo/sync-shared-rules.yml`](./templates/workflows-repo/sync-shared-rules.yml).
+The workflows repo must be public — or explicitly share its Actions with your other repos — for the
+per-repo stubs to call it. This repo dogfoods the mechanism: its own stub
+([`.github/workflows/sync-shared-rules.yml`](./.github/workflows/sync-shared-rules.yml)) keeps the
+`templates/AGENTS.md` marker block in step with `shared-rules.md`.
+
+### Known limitations
+
+- **Propagation is scheduled (weekly), not instant.** Trigger a repo's stub manually when you don't
+  want to wait. Instant push fan-out would require a cross-repo credential (PAT or GitHub App) held
+  centrally — deliberately avoided.
+- **CI doesn't run on sync PRs.** PRs opened with `GITHUB_TOKEN` don't trigger other workflows
+  (GitHub's recursion guard). For a rules-only change that's fine; close and reopen the PR if you
+  need CI to run on it.
+
+## Cross-tool compatibility
+
+`AGENTS.md` is the vendor-neutral standard read natively by Codex, Cursor, Copilot, Gemini CLI, and
+others. Claude Code reads `CLAUDE.md`, so each repo carries the one-line `@AGENTS.md` shim — Claude
+Code expands the import at load time, and both tools see identical instructions. A symlink also works
+on macOS/Linux, but the one-line file behaves everywhere, including Windows checkouts.
+
+The shared rules are spliced **inline** into `AGENTS.md` rather than kept as a separate imported
+file, because only Claude Code has an import syntax — Codex and other AGENTS.md readers only see
+content that is physically in the file.
 
 ## Authoring guidance
 
-Core principle: **`CLAUDE.md` loads into every session, so keep it lean.** For each line, ask
+Core principle: **`AGENTS.md` loads into every session, so keep it lean.** For each line, ask
 *"would removing this cause the agent to make a mistake?"* If not, cut it. Don't restate anything the
 agent can infer from the code, standard language conventions, or full API docs (link to those
 instead).
 
-Section-by-section notes for filling in the template:
+Section-by-section notes for the seed:
 
+- **Shared rules block** — machine-managed; never hand-edit it in a consuming repo. Propose changes
+  in this repo instead.
 - **Project overview** — The WHY and WHAT in 2–4 sentences: the mental model, not a feature list.
 - **Setup** — Only the steps that aren't obvious from the repo (env vars, required tooling, quirks).
 - **Commands** — Only the canonical few an agent can't guess. Lint, typecheck, and format checks
   belong *inside* Build. The **Gate** is the single command to run before claiming work is done or
   pushing; make it match CI so "passes locally" means "passes CI".
-- **Working principles** — Stack-agnostic behavioral rules (the community "Karpathy guidelines"),
-  targeting the common agent failure modes: silent wrong assumptions, over-engineering, scope creep.
-  These are universal — keep them as-is across projects.
-- **Workflow** — How an agent should work in *this* repo; the project-specific mechanics.
 - **Code style** — Let linters and formatters own mechanical style; don't restate rules a tool
   enforces. List only project-specific conventions that differ from the ecosystem default.
 - **Testing** — Framework, where tests live, expectations, and any non-obvious setup gotchas.
-- **Repository etiquette** — Branch and PR conventions, and commit-message format (Conventional
-  Commits).
-- **Security & safety** — Secrets handling, input validation, and domain-specific hard constraints.
-- **Never** — Hard prohibitions. Short, absolute, and enforced — the lines worth being blunt about.
+- **Repository etiquette** — Branch and PR conventions (the commit-message format is already in the
+  shared rules).
 - **Gotchas** — Hard-won, non-obvious knowledge that has bitten people before. Highest value per line.
-- **Further context** — `CLAUDE.md` is *how to work*; the *what we're building* (design, specs,
-  decisions, status) lives in the wiki. Link out so the agent loads detail only when needed. Nested `CLAUDE.md`
-  files in subdirectories are pulled in on demand when the agent works in those areas.
+- **Further context** — `AGENTS.md` is *how to work*; the *what we're building* (design, specs,
+  decisions, status) lives in the wiki. Link out so the agent loads detail only when needed. Nested
+  instruction files in subdirectories are pulled in when the agent works in those areas.
 
 ## The `wiki/` template
 
-`CLAUDE.md` is *how to work in the repo*; the **wiki** is *what we're building* — the project's design
+`AGENTS.md` is *how to work in the repo*; the **wiki** is *what we're building* — the project's design
 source of truth (architecture, decisions, current status), written so a fresh agent or human can pick
-the project up mid-stream. The `wiki/` folder here is a reusable starting point you can copy into any
-project, and `wiki/CLAUDE.md` is the rule that tells coding agents how to keep it healthy as it grows.
+the project up mid-stream. [`templates/wiki/`](./templates/wiki) is a reusable starting point you can
+copy into any project, and `wiki/AGENTS.md` is the rule that tells coding agents how to keep it
+healthy as it grows.
 
 How to use it:
 
-1. Copy the `wiki/` folder to the root of your project.
+1. Copy the `templates/wiki/` folder to `wiki/` at the root of your project.
 2. Fill in `wiki/index.md` and `wiki/status.md` — replace the `<angle-bracket>` placeholders. Leave
-   `wiki/CLAUDE.md` as-is; it's a generic rule, not a fill-in template.
+   `wiki/AGENTS.md` and `wiki/CLAUDE.md` as-is; they're generic rules, not fill-in templates.
 3. Add core pages (`architecture.md`, etc.) only as they earn their place — don't pre-create stubs.
 4. Decisions: log load-bearing choices (what + why, including the rejected alternative) in
    `wiki/decisions.md` — a single running log. There's no ADR folder by design; a growing set of
    numbered decision files is a maintenance burden and a drift source, so keep it to one lean page.
-5. Point the root `CLAUDE.md` at the wiki under **Further context** (e.g. `@wiki/index.md`) so agents
-   load design detail only when they need it.
+5. The seed `AGENTS.md` already points at the wiki under **Further context** (`@wiki/index.md`) so
+   agents load design detail only when they need it.
 
-`wiki/CLAUDE.md` is a nested instruction file: Claude Code loads it on demand when an agent works under
-`wiki/`. It distills industry standards — docs-as-code, single-source-of-truth, present-tense reference
-docs, a single lean decision log (no ADR sprawl), and context engineering for agents — into conventions
-that fight the two ways a knowledge base rots: **fossilization** (dated copies, change-narration) and
-**fragmentation** (drifting stubs).
+`wiki/AGENTS.md` is a nested instruction file: agents load it when working under `wiki/`. It distills
+industry standards — docs-as-code, single-source-of-truth, present-tense reference docs, a single lean
+decision log (no ADR sprawl), and context engineering for agents — into conventions that fight the two
+ways a knowledge base rots: **fossilization** (dated copies, change-narration) and **fragmentation**
+(drifting stubs).
 
 Sources for those standards (kept here, not in the agent-loaded rule):
 [AGENTS.md](https://agents.md/),
@@ -98,10 +145,12 @@ Sources for those standards (kept here, not in the agent-loaded rule):
 
 | File | Purpose |
 | --- | --- |
-| `CLAUDE.md` | The template — comment-free, placeholder-driven agent instructions. |
-| `AGENTS.md` | Symlink to `CLAUDE.md` for AGENTS.md-compatible agents. |
-| `README.md` | This file — how to use and fill in the template. |
-| `wiki/CLAUDE.md` | Generic rule for maintaining a project wiki (the reusable deliverable). |
-| `wiki/AGENTS.md` | Symlink to `wiki/CLAUDE.md` for cross-tool agents. |
-| `wiki/index.md`, `wiki/status.md` | Navigation index and mid-stream handoff page (fill-in templates). |
-| `wiki/decisions.md` | The decision log — load-bearing choices and their rationale (one page, no ADR folder). |
+| `shared-rules.md` | The universal rules — single source of truth, synced into consuming repos. |
+| `templates/AGENTS.md` | The seed consumers copy: shared-rules marker block + lean project sections. |
+| `templates/CLAUDE.md` | The one-line `@AGENTS.md` shim for Claude Code. |
+| `templates/sync-shared-rules.yml` | The per-repo sync stub (goes in `.github/workflows/`). |
+| `templates/workflows-repo/sync-shared-rules.yml` | Bootstrap copy of the reusable sync workflow for `JINGBANZ/workflows`. |
+| `templates/wiki/` | The design-docs starter: maintenance rules, index, status, and decision log. |
+| `.github/workflows/sync-shared-rules.yml` | This repo's own stub — keeps `templates/AGENTS.md` in step with `shared-rules.md`. |
+| `AGENTS.md`, `CLAUDE.md` | Instructions for agents working on **this** repo (not part of the template). |
+| `README.md` | This file — how the sync works, adoption steps, and authoring guidance. |

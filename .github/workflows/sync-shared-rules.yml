@@ -1,0 +1,23 @@
+# Dogfoods the reusable sync workflow: keeps the marker block in templates/AGENTS.md in step with
+# shared-rules.md, so the seed consumers copy is never stale. Unlike consuming repos, this one also
+# triggers on push, since the source file lives here.
+name: Sync shared rules
+
+on:
+  push:
+    branches: [main]
+    paths: [shared-rules.md]
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch: {}
+
+permissions: {}
+
+jobs:
+  sync:
+    uses: JINGBANZ/workflows/.github/workflows/sync-shared-rules.yml@main
+    with:
+      target-file: templates/AGENTS.md
+    permissions:
+      contents: write
+      pull-requests: write
