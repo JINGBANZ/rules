@@ -19,7 +19,7 @@ Each consuming repo carries three small files:
 | --- | --- |
 | `AGENTS.md` | The single instruction file. Starts with a machine-managed marker block holding the shared rules; project-specific sections follow. |
 | `CLAUDE.md` | One line — `@AGENTS.md` — so Claude Code loads the same file (it doesn't read `AGENTS.md` natively). |
-| `.github/workflows/sync-shared-rules.yml` | A ~15-line stub calling the reusable sync workflow in [JINGBANZ/workflows](https://github.com/JINGBANZ/workflows) weekly, and on demand. |
+| `.github/workflows/sync-shared-rules.yml` | A ~15-line stub calling the reusable sync workflow in [JINGBANZ/workflows](https://github.com/JINGBANZ/workflows) weekly, and on demand. Copied from that repo's `templates/`. |
 
 The reusable workflow fetches `shared-rules.md` from this repo (it's public — no token needed),
 splices it between the `<!-- shared-rules:begin -->` / `<!-- shared-rules:end -->` markers in
@@ -32,34 +32,39 @@ marker block, the next run opens a correcting PR.
 
 1. Copy [`templates/AGENTS.md`](./templates/AGENTS.md) and
    [`templates/CLAUDE.md`](./templates/CLAUDE.md) to the project root.
-2. Copy [`templates/sync-shared-rules.yml`](./templates/sync-shared-rules.yml) to
-   `.github/workflows/`.
+2. Copy the sync stub from
+   [`JINGBANZ/workflows/templates/sync-shared-rules.yml`](https://github.com/JINGBANZ/workflows/blob/main/templates/sync-shared-rules.yml)
+   to `.github/workflows/`.
 3. In the repo settings, enable **Settings → Actions → General → Allow GitHub Actions to create and
    approve pull requests** (the sync needs it to open PRs).
-4. Ask your coding agent to fill in the sections below the marker block in `AGENTS.md` from the
+4. Run the sync once (**Actions → Sync shared rules → Run workflow**) and merge the PR it opens —
+   this populates the empty marker block in `AGENTS.md` with the current shared rules.
+5. Ask your coding agent to fill in the sections below the marker block in `AGENTS.md` from the
    codebase; delete any section that doesn't apply. Don't touch the marker block itself.
-5. (Optional) Copy [`templates/wiki/`](./templates/wiki) as the design-docs starter (see
+6. (Optional) Copy [`templates/wiki/`](./templates/wiki) as the design-docs starter (see
    [The `wiki/` template](#the-wiki-template)).
 
 ## Changing the shared rules
 
-Edit [`shared-rules.md`](./shared-rules.md) in a PR here, updating the marker block in
-[`templates/AGENTS.md`](./templates/AGENTS.md) in the same PR (verbatim copy between the markers).
-Once merged, every consuming repo receives the change as an automated PR at its next scheduled sync —
-or immediately via the sync workflow's **Run workflow** button in that repo.
+Edit [`shared-rules.md`](./shared-rules.md) in a PR here. Once merged, every consuming repo receives
+the change as an automated PR at its next scheduled sync — or immediately via the sync workflow's
+**Run workflow** button in that repo.
 
 Add a rule only when an agent makes a mistake the rule would have prevented; prune rules that no
 longer earn their place. Every line loads into every session of every consuming repo.
 
-## One-time setup of the sync
+## Where the sync machinery lives
 
-The reusable workflow's canonical home is
-`JINGBANZ/workflows/.github/workflows/sync-shared-rules.yml`; a bootstrap copy lives at
-[`templates/workflows-repo/sync-shared-rules.yml`](./templates/workflows-repo/sync-shared-rules.yml).
-The workflows repo must be public — or explicitly share its Actions with your other repos — for the
-per-repo stubs to call it. This repo dogfoods the mechanism: its own stub
-([`.github/workflows/sync-shared-rules.yml`](./.github/workflows/sync-shared-rules.yml)) keeps the
-`templates/AGENTS.md` marker block in step with `shared-rules.md`.
+All workflow files live in [JINGBANZ/workflows](https://github.com/JINGBANZ/workflows), following
+that repo's convention (reusable workflows in `.github/workflows/`, caller stubs in `templates/`):
+
+- `.github/workflows/sync-shared-rules.yml` — the reusable workflow: fetches `shared-rules.md`,
+  splices the marker block, opens the PR.
+- `templates/sync-shared-rules.yml` — the stub each consuming repo copies.
+
+This repo holds only the synced content and the seed files — no workflows. The seed's marker block
+ships empty; the first sync run in each consuming repo fills it, so the rules exist in exactly one
+place here.
 
 ### Known limitations
 
@@ -146,11 +151,11 @@ Sources for those standards (kept here, not in the agent-loaded rule):
 | File | Purpose |
 | --- | --- |
 | `shared-rules.md` | The universal rules — single source of truth, synced into consuming repos. |
-| `templates/AGENTS.md` | The seed consumers copy: shared-rules marker block + lean project sections. |
+| `templates/AGENTS.md` | The seed consumers copy: empty shared-rules marker block + lean project sections. |
 | `templates/CLAUDE.md` | The one-line `@AGENTS.md` shim for Claude Code. |
-| `templates/sync-shared-rules.yml` | The per-repo sync stub (goes in `.github/workflows/`). |
-| `templates/workflows-repo/sync-shared-rules.yml` | Bootstrap copy of the reusable sync workflow for `JINGBANZ/workflows`. |
 | `templates/wiki/` | The design-docs starter: maintenance rules, index, status, and decision log. |
-| `.github/workflows/sync-shared-rules.yml` | This repo's own stub — keeps `templates/AGENTS.md` in step with `shared-rules.md`. |
 | `AGENTS.md`, `CLAUDE.md` | Instructions for agents working on **this** repo (not part of the template). |
 | `README.md` | This file — how the sync works, adoption steps, and authoring guidance. |
+
+The sync workflow and its per-repo stub live in
+[JINGBANZ/workflows](https://github.com/JINGBANZ/workflows), not here.
