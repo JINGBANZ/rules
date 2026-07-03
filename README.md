@@ -21,7 +21,8 @@ and templates/CLAUDE.md from that repo to the project root, and copy
 https://github.com/JINGBANZ/workflows/blob/main/templates/sync-shared-rules.yml to
 .github/workflows/sync-shared-rules.yml. Then fill in the sections below the marker block in
 AGENTS.md from this codebase, deleting sections that don't apply — never edit the marker block
-itself. Open a PR with the result.
+itself. Also copy templates/wiki/ to wiki/ and fill in wiki/index.md and wiki/status.md from the
+codebase, leaving wiki/AGENTS.md and wiki/CLAUDE.md as-is. Open a PR with the result.
 ```
 
 Two clicks remain for a human: enable **Settings → Actions → General → Allow GitHub Actions to
