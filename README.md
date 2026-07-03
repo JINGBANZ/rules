@@ -11,6 +11,24 @@ Agent instructions mix two kinds of content with different owners:
 - **Project-specific context** — stack, commands, testing, gotchas. Authored per repo (mostly by the
   agent itself, from the codebase); never touched by the sync.
 
+## Quick start
+
+Paste this to your coding agent in the target repo:
+
+```text
+Adopt the shared agent rules from https://github.com/JINGBANZ/rules: copy templates/AGENTS.md
+and templates/CLAUDE.md from that repo to the project root, and copy
+https://github.com/JINGBANZ/workflows/blob/main/templates/sync-shared-rules.yml to
+.github/workflows/sync-shared-rules.yml. Then fill in the sections below the marker block in
+AGENTS.md from this codebase, deleting sections that don't apply — never edit the marker block
+itself. Open a PR with the result.
+```
+
+Two clicks remain for a human: enable **Settings → Actions → General → Allow GitHub Actions to
+create and approve pull requests**, then run **Actions → Sync shared rules → Run workflow** once and
+merge the PR it opens — that fills the marker block with the current rules. Full detail:
+[Adopting the rules in a repo](#adopting-the-rules-in-a-repo).
+
 ## How it works
 
 Each consuming repo carries three small files:
