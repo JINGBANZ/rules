@@ -1,6 +1,3 @@
-> **Shared engineering rules** — maintained in [JINGBANZ/rules](https://github.com/JINGBANZ/rules)
-> and synced automatically into the marker block of each consuming repo's `AGENTS.md`. Don't edit
-> them in place — the next sync overwrites the block; propose changes in the rules repo instead.
 > The **Gate** referenced below is the single build-and-test command each repo defines in its own
 > Commands section.
 
