@@ -1,6 +1,3 @@
-> The **Gate** referenced below is the single build-and-test command each repo defines in its own
-> Commands section.
-
 ## Working principles
 
 - **Think before coding.** State assumptions explicitly. If a request has multiple reasonable
