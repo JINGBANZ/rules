@@ -1,6 +1,6 @@
 # AGENTS.md
 
-<!-- shared-rules:begin — machine-managed block; do not edit inside. -->
+<!-- shared-rules:begin — machine-managed block; do not edit — propose changes in JINGBANZ/rules. -->
 <!-- Empty until the first sync run populates it: Actions → "Sync shared rules" → Run workflow. -->
 <!-- shared-rules:end -->
 
