@@ -12,7 +12,7 @@
 ## Core pages
 
 <Add one line per page as `[name](./name.md) — what it covers`, only as pages earn their place (see
-[`CLAUDE.md`](./CLAUDE.md) → Convention 7). The starters below are plain text, not links, so a
+[`AGENTS.md`](./AGENTS.md) → Convention 7). The starters below are plain text, not links, so a
 freshly-copied wiki has no dangling links — make each a real link once the page exists.>
 
 - `architecture.md` — the vision, the main components, how they fit, key boundaries.
@@ -21,8 +21,8 @@ freshly-copied wiki has no dangling links — make each a real link once the pag
 ## Decisions
 
 - [decisions.md](./decisions.md) — the decision log: what was chosen and why, with the rejected
-  alternative. One page, no ADR folder by design; see [`CLAUDE.md`](./CLAUDE.md) → Convention 8.
+  alternative. One page, no ADR folder by design; see [`AGENTS.md`](./AGENTS.md) → Convention 8.
 
 ## Meta
 
-- [CLAUDE.md](./CLAUDE.md) — conventions for maintaining this wiki. Read before editing any wiki file.
+- [AGENTS.md](./AGENTS.md) — conventions for maintaining this wiki. Read before editing any wiki file.

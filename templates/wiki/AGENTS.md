@@ -1,8 +1,8 @@
-# wiki/CLAUDE.md
+# wiki/AGENTS.md
 
 Conventions for maintaining this wiki. Read before editing anything under `wiki/`.
 
-The root `CLAUDE.md` is *how to work in this repo*; this is *how to keep the docs healthy*. The wiki is
+The root `AGENTS.md` is *how to work in this repo*; this is *how to keep the docs healthy*. The wiki is
 the design source of truth — what the system is, how it works, and why — so a fresh agent can pick the
 project up mid-stream. Page list: [`index.md`](./index.md); current state: [`status.md`](./status.md).
 

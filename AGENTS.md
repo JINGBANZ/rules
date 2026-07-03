@@ -1,1 +1,36 @@
-CLAUDE.md
+# AGENTS.md
+
+This repo is the source of truth for shared coding-agent rules and the starter files consuming repos
+copy. Everything here is markdown plus workflow config — there is no build, test suite, or Gate.
+
+## Layout
+
+| Path | What it is |
+| --- | --- |
+| `shared-rules.md` | The universal rules — the synced artifact. The reusable sync workflow splices this file into the `shared-rules` marker block of each consuming repo's `AGENTS.md`. |
+| `templates/` | Starter files consumers copy verbatim: the `AGENTS.md` seed, the one-line `CLAUDE.md` shim, and the `wiki/` starter. |
+| `README.md` | How the sync works, how to adopt the rules in a repo, and authoring guidance. |
+
+All workflow files live in [`JINGBANZ/workflows`](https://github.com/JINGBANZ/workflows) — the
+single source of truth for the sync machinery: the reusable workflow
+(`.github/workflows/sync-shared-rules.yml`) and the per-repo caller stub
+(`templates/sync-shared-rules.yml`). This repo holds only the content being synced.
+
+## Rules for working here
+
+- Everything under `templates/` is a **template shipped to consumers, not this repo's live
+  documentation**. The `<angle-bracket>` hints are intentional — never fill them in, and never apply
+  the `templates/wiki/` keep-in-sync checklist to this repo (it has no wiki of its own).
+- Keep `shared-rules.md` universal: no placeholders, nothing stack- or project-specific.
+  Project-specific guidance belongs in the seed sections of `templates/AGENTS.md` instead.
+- The marker block in `templates/AGENTS.md` ships **empty** — the first sync run in a consuming repo
+  populates it. Never paste the rules into it; that would duplicate `shared-rules.md`.
+- The markers are coupled to the splice step in the reusable workflow in `JINGBANZ/workflows`: the
+  begin marker is matched by **prefix** — the line must start with `<!-- shared-rules:begin` and stay
+  on a single line — while the end marker must be the **exact** string `<!-- shared-rules:end -->`.
+  Change them and the workflow together or not at all.
+- Add a rule only when an agent makes a mistake that rule would have prevented; prune rules that no
+  longer earn their place. Every line costs context in every session of every consuming repo.
+- The rules in [`shared-rules.md`](./shared-rules.md) apply to this repo too — read and follow them
+  (skip anything about the **Gate**; this repo has none). They aren't copied here: the file is the
+  source of truth and it sits one directory entry away.
