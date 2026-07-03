@@ -64,9 +64,10 @@ that repo's convention (reusable workflows in `.github/workflows/`, caller stubs
   splices the marker block, opens the PR.
 - `templates/sync-shared-rules.yml` — the stub each consuming repo copies.
 
-Besides the synced content and the seed files, this repo carries only its own copy of the caller
-stub — it dogfoods the sync into its root `AGENTS.md`. The marker blocks ship empty; the first sync
-run fills them, so the rules exist in exactly one place here.
+This repo holds only the synced content and the seed files — no workflows. The seed's marker block
+ships empty; the first sync run in each consuming repo fills it, so the rules exist in exactly one
+place here. This repo doesn't sync into itself either: its own `AGENTS.md` just points at
+`shared-rules.md`, which lives alongside it.
 
 ### Known limitations
 
@@ -157,7 +158,6 @@ Sources for those standards (kept here, not in the agent-loaded rule):
 | `templates/CLAUDE.md` | The one-line `@AGENTS.md` shim for Claude Code. |
 | `templates/wiki/` | The design-docs starter: maintenance rules, index, status, and decision log. |
 | `AGENTS.md`, `CLAUDE.md` | Instructions for agents working on **this** repo (not part of the template). |
-| `.github/workflows/sync-shared-rules.yml` | This repo's own caller stub — dogfoods the sync into the root `AGENTS.md`. |
 | `README.md` | This file — how the sync works, adoption steps, and authoring guidance. |
 
 The sync workflow and its per-repo stub live in
