@@ -1,6 +1,6 @@
 # AGENTS.md
 
-<!-- shared-rules:begin — machine-managed block; the sync workflow owns everything inside. Propose rule changes in JINGBANZ/rules, not here. -->
+<!-- shared-rules:begin — machine-managed block; do not edit inside. -->
 <!-- Empty until the first sync run populates it: Actions → "Sync shared rules" → Run workflow. -->
 <!-- shared-rules:end -->
 
@@ -36,6 +36,11 @@ your coding agent to draft this section and the ones below from the codebase, th
 
 - **Branches:** <naming convention, e.g. `feat/<short-desc>`, `fix/<short-desc>`>
 - **Pull requests:** <what a PR needs, e.g. description of intent, tests passing, linked issue>
+
+## Security & safety
+
+<Domain-specific hard constraints, e.g. "Never run destructive DB migrations without confirmation."
+The universal rules (secrets, input validation) are in the shared block above. Delete if none.>
 
 ## Gotchas
 

@@ -22,8 +22,10 @@ Each consuming repo carries three small files:
 | `.github/workflows/sync-shared-rules.yml` | A ~15-line stub calling the reusable sync workflow in [JINGBANZ/workflows](https://github.com/JINGBANZ/workflows) weekly, and on demand. Copied from that repo's `templates/`. |
 
 The reusable workflow fetches `shared-rules.md` from this repo (it's public — no token needed),
-splices it between the `<!-- shared-rules:begin -->` / `<!-- shared-rules:end -->` markers in
-`AGENTS.md`, and opens a pull request in the consuming repo if anything changed. It runs on the
+splices it into the marker block in `AGENTS.md`, and opens a pull request in the consuming repo if
+anything changed. The begin marker is matched by prefix — any single line starting with
+`<!-- shared-rules:begin` (which is how the seed's marker carries a short warning inside the
+comment) — while the end marker must be the exact string `<!-- shared-rules:end -->`. It runs on the
 consuming repo's own `GITHUB_TOKEN` — there is no PAT to create, rotate, or grant per repo, and no
 central credential with write access to everything. It also self-heals: if someone edits inside the
 marker block, the next run opens a correcting PR.
@@ -50,8 +52,8 @@ Edit [`shared-rules.md`](./shared-rules.md) in a PR here. Once merged, every con
 the change as an automated PR at its next scheduled sync — or immediately via the sync workflow's
 **Run workflow** button in that repo.
 
-Add a rule only when an agent makes a mistake the rule would have prevented; prune rules that no
-longer earn their place. Every line loads into every session of every consuming repo.
+For when to add or prune a rule, see the policy in [`AGENTS.md`](./AGENTS.md) → "Rules for working
+here" — it lives there (and only there) so agents editing the rules load it.
 
 ## Where the sync machinery lives
 

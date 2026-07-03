@@ -24,8 +24,10 @@ the reusable workflow (`.github/workflows/sync-shared-rules.yml`) and the per-re
   Project-specific guidance belongs in the seed sections of `templates/AGENTS.md` instead.
 - The marker block in `templates/AGENTS.md` ships **empty** — the first sync run in a consuming repo
   populates it. Never paste the rules into it; that would duplicate `shared-rules.md`.
-- The marker format (`<!-- shared-rules:begin -->` / `<!-- shared-rules:end -->`) is coupled to the
-  splice step in the reusable workflow in `JINGBANZ/workflows` — change them together or not at all.
+- The markers are coupled to the splice step in the reusable workflow in `JINGBANZ/workflows`: the
+  begin marker is matched by **prefix** — the line must start with `<!-- shared-rules:begin` and stay
+  on a single line — while the end marker must be the **exact** string `<!-- shared-rules:end -->`.
+  Change them and the workflow together or not at all.
 - Add a rule only when an agent makes a mistake that rule would have prevented; prune rules that no
   longer earn their place. Every line costs context in every session of every consuming repo.
 - Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/). Open a PR for

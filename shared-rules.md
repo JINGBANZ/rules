@@ -28,6 +28,8 @@
   its structure, naming, and idioms. Don't impose a pattern the repo doesn't already use.
 - **Prefer running focused tests** over the whole suite while iterating, then run the full **Gate**
   before finishing.
+- **Run the repo's linter/formatter before finishing** — leave the tree formatted and lint-clean,
+  whether or not the **Gate** already checks it.
 - **Open a PR when the work is done.** Once the change is complete and the **Gate** passes, commit
   to a branch and open a pull request without waiting to be asked. Don't leave finished work
   uncommitted on a local branch.
@@ -46,7 +48,7 @@ Mark breaking changes with `!` (`feat!:`) or a `BREAKING CHANGE:` footer. One lo
 ## Never
 
 - **Never** skip pre-commit/pre-push hooks (e.g. `--no-verify`) or the **Gate**.
-- **Never** commit secrets, `.env` files, or credentials.
+- **Never** commit secrets, `.env` files, or credentials — nor generated artifacts or large binaries.
 - **Never** commit directly to the default branch; open a PR.
 - **Never** `git push --force` to a shared branch.
 - **Never** modify or delete a test to make a broken change pass — fix the code, not the test.
