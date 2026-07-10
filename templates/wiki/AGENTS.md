@@ -15,10 +15,10 @@ fights the two ways it rots:
   the history; the wiki holds *what is true now*.
 - **Fragmentation.** Many drifting micro-pages. One organized page beats a directory of stubs.
 
-**Ownership.** You own judgment and the raw record — the code, and the call on what's worth documenting;
-the agent owns the bookkeeping — summarizing, cross-referencing, filing under the right page, and updating
-neighbors. If you find yourself doing the bookkeeping by hand, a convention below is underspecified, not
-the agent.
+**Ownership.** The agent owns the bookkeeping — summarizing, cross-referencing, filing under the right
+page, updating neighbors. The human owns judgment: what enters the wiki and what's worth documenting. If
+the human ends up filing by hand, a convention below is underspecified — fix the convention, not the
+symptom.
 
 ## Conventions
 
