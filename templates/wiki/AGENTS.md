@@ -15,6 +15,11 @@ fights the two ways it rots:
   the history; the wiki holds *what is true now*.
 - **Fragmentation.** Many drifting micro-pages. One organized page beats a directory of stubs.
 
+**Ownership.** The agent owns the bookkeeping — summarizing, cross-referencing, filing under the right
+page, updating neighbors. The human owns judgment: what enters the wiki and what's worth documenting. If
+the human ends up filing by hand, a convention below is underspecified — fix the convention, not the
+symptom.
+
 ## Conventions
 
 ### 1. Edit in place. Never append dated or versioned copies.
@@ -78,6 +83,16 @@ rationale persists, so [Convention 3](#3-write-in-the-present-dont-narrate-refac
 it. **Supersede, don't rewrite:** when a later decision reverses an earlier one, leave it and append
 `**Superseded by:** <entry>` — the lifecycle a numbered ADR would carry, in one line.
 
+### 9. Run health checks, not only per-change updates.
+
+The keep-in-sync checklist fires when you touch code; drift also accumulates silently between changes.
+Periodically audit the whole wiki for the rot the write-time rules miss: contradictions between pages,
+**orphan pages** (nothing links in — value is in the edges, not the nodes), one entity spelled two ways,
+and claims the code no longer supports. A contradiction is information, not an error to paper over — it
+means two pages, or a page and the code, disagree, and now you know where to look. An index you have to
+bypass — reaching answers by scanning every page instead of [`index.md`](./index.md) plus a few — has
+stopped reflecting the wiki and needs a pass.
+
 ## Keep-in-sync checklist
 
 Run in the **same change (PR or commit)** as the code, never as a later cleanup. A change that alters
@@ -85,7 +100,8 @@ documented behavior without a doc update is incomplete; stale docs erode trust f
 
 1. **[`status.md`](./status.md)** — move built things to "Built" with a file pointer; delete abandoned
    "Not yet built" items (log why in `decisions.md` if load-bearing); update phase + next action.
-2. **Core page(s)** — create or update in place, present tense.
+2. **Core page(s)** — create or update in place, present tense; touch every page whose meaning the change
+   alters, not just the nearest one.
 3. **[`decisions.md`](./decisions.md)** — log any load-bearing decision.
 4. **[`index.md`](./index.md)** — update if a page was added, renamed, or removed.
 5. **Links** — confirm every link and file pointer in touched pages still resolves.
