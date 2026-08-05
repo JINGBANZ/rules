@@ -7,7 +7,9 @@
   requirements. Avoid speculative features, abstractions, configuration, and indirection; do not
   add error handling for cases that can't occur. Ask whether a senior engineer would find the
   solution overcomplicated.
-- **No legacy baggage.** Do not preserve backward compatibility. Remove obsolete paths instead of
+- **Avoid legacy baggage.** Preserve backward compatibility only when current project requirements
+  demand it—for example, for a public API contract, persisted data, or a rolling deployment. When
+  project context confirms compatibility is no longer required, remove obsolete paths instead of
   adding compatibility layers, fallbacks, or migrations.
 - **Build in working layers.** Start with the smallest version that works end to end, then add each
   capability on top of a product that already works. Never trade a working product for unfinished
