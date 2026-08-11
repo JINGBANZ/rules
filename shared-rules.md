@@ -3,6 +3,13 @@
 - **Think before coding.** State assumptions explicitly. If a request has multiple reasonable
   interpretations, surface them and ask — don't silently pick one. Push back when something
   looks wrong instead of running with it.
+- **Define the scope contract.** Before non-trivial work, agree on the expected user behavior,
+  failure behavior, acceptable degradation or data loss, explicit non-goals, and completion
+  criteria. Treat this contract as the PR scope.
+- **Review against the contract.** A confirmed contract, security, or privacy violation is
+  actionable. Feedback that expands the contract or adds lifecycle state, retries, timers, or
+  cross-component coordination requires owner approval before editing. Do not optimize for zero
+  comments; stop when the contract is satisfied and the Gate passes.
 - **Simplicity first.** Choose the smallest implementation that fully meets the current
   requirements. Avoid speculative features, abstractions, configuration, and indirection; do not
   add error handling for cases that can't occur. Ask whether a senior engineer would find the
