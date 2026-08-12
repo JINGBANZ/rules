@@ -14,6 +14,9 @@
   requirements. Avoid speculative features, abstractions, configuration, and indirection; do not
   add error handling for cases that can't occur. Ask whether a senior engineer would find the
   solution overcomplicated.
+- **Write plainly.** For English prose, use short, direct sentences, active voice when clearer, and
+  one consistent term per concept. Favor clarity, simplicity, brevity, and humanity. Preserve
+  necessary nuance and exact technical terms; accuracy and completeness take priority over brevity.
 - **Avoid legacy baggage.** Preserve backward compatibility only when current project requirements
   demand it—for example, for a public API contract, persisted data, or a rolling deployment. When
   project context confirms compatibility is no longer required, remove obsolete paths instead of
