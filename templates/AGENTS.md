@@ -48,4 +48,4 @@ The universal rules (secrets, input validation) are in the shared block above. D
 
 ## Further context
 
-- **Design source of truth:** @wiki/index.md — specs, architecture, decisions, and current status.
+- **Design source of truth:** @wiki/index.md — specs, architecture, rationale, and current status.

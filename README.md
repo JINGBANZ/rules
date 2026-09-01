@@ -131,13 +131,13 @@ Section-by-section notes for the seed:
   shared rules).
 - **Gotchas** — Hard-won, non-obvious knowledge that has bitten people before. Highest value per line.
 - **Further context** — `AGENTS.md` is *how to work*; the *what we're building* (design, specs,
-  decisions, status) lives in the wiki. Link out so the agent loads detail only when needed. Nested
+  rationale, status) lives in the wiki. Link out so the agent loads detail only when needed. Nested
   instruction files in subdirectories are pulled in when the agent works in those areas.
 
 ## The `wiki/` template
 
 `AGENTS.md` is *how to work in the repo*; the **wiki** is *what we're building* — the project's design
-source of truth (architecture, decisions, current status), written so a fresh agent or human can pick
+source of truth (architecture, rationale, current status), written so a fresh agent or human can pick
 the project up mid-stream. [`templates/wiki/`](./templates/wiki) is a reusable starting point you can
 copy into any project, and `wiki/AGENTS.md` is the rule that tells coding agents how to keep it
 healthy as it grows.
@@ -148,15 +148,17 @@ How to use it:
 2. Fill in `wiki/index.md` and `wiki/status.md` — replace the `<angle-bracket>` placeholders. Leave
    `wiki/AGENTS.md` and `wiki/CLAUDE.md` as-is; they're generic rules, not fill-in templates.
 3. Add core pages (`architecture.md`, etc.) only as they earn their place — don't pre-create stubs.
-4. Decisions: log load-bearing choices (what + why, including the rejected alternative) in
-   `wiki/decisions.md` — a single running log. There's no ADR folder by design; a growing set of
-   numbered decision files is a maintenance burden and a drift source, so keep it to one lean page.
+4. Rationale: when a choice is non-obvious, or an obvious alternative was rejected, say so in a
+   sentence or two on the design page beside the fact it explains. There is no decision log and no
+   ADR folder by design: a log appended per change fills with entries of every weight, conflicts on
+   every merge, and drifts from the pages it describes. The change story belongs in the pull request.
 5. The seed `AGENTS.md` already points at the wiki under **Further context** (`@wiki/index.md`) so
    agents load design detail only when they need it.
 
 `wiki/AGENTS.md` is a nested instruction file: agents load it when working under `wiki/`. It distills
-industry standards — docs-as-code, single-source-of-truth, present-tense reference docs, a single lean
-decision log (no ADR sprawl), and context engineering for agents — into conventions that fight the two
+industry standards — docs-as-code, single-source-of-truth, present-tense reference docs, rationale kept
+beside the design it explains (no decision log, no ADR sprawl), and context engineering for agents —
+into conventions that fight the two
 ways a knowledge base rots: **fossilization** (dated copies, change-narration) and **fragmentation**
 (drifting stubs).
 
@@ -164,7 +166,6 @@ Sources for those standards (kept here, not in the agent-loaded rule):
 [AGENTS.md](https://agents.md/),
 [docs-as-code](https://www.writethedocs.org/guide/docs-as-code/),
 [Diátaxis](https://diataxis.fr/),
-[ADRs](https://adr.github.io/),
 [llms.txt](https://llmstxt.org/), and
 [effective context engineering for agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents).
 
@@ -175,7 +176,7 @@ Sources for those standards (kept here, not in the agent-loaded rule):
 | `shared-rules.md` | The universal rules — single source of truth, synced into consuming repos. |
 | `templates/AGENTS.md` | The seed consumers copy: empty shared-rules marker block + lean project sections. |
 | `templates/CLAUDE.md` | The one-line `@AGENTS.md` shim for Claude Code. |
-| `templates/wiki/` | The design-docs starter: maintenance rules, index, status, and decision log. |
+| `templates/wiki/` | The design-docs starter: maintenance rules, index, and status. |
 | `AGENTS.md`, `CLAUDE.md` | Instructions for agents working on **this** repo (not part of the template). |
 | `README.md` | This file — how the sync works, adoption steps, and authoring guidance. |
 
