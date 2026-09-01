@@ -18,11 +18,6 @@ freshly-copied wiki has no dangling links — make each a real link once the pag
 - `architecture.md` — the vision, the main components, how they fit, key boundaries.
 - `build-and-run.md` — toolchain, how to build/run/test locally, operational notes.
 
-## Decisions
-
-- [decisions.md](./decisions.md) — the decision log: what was chosen and why, with the rejected
-  alternative. One page, no ADR folder by design; see [`AGENTS.md`](./AGENTS.md) → Convention 8.
-
 ## Meta
 
 - [AGENTS.md](./AGENTS.md) — conventions for maintaining this wiki. Read before editing any wiki file.
