@@ -22,6 +22,10 @@
   capability on top of a product that already works. Never trade a working product for unfinished
   complexity.
 - **Keep boundaries clear.** Keep components modular and concerns separated.
+- **Extend, don't duplicate.** When the codebase already has a component that owns a
+  responsibility, extend or refactor it to cover the new case instead of building a parallel one
+  beside it, so each capability has one owner and every improvement reaches all of its users. If it
+  cannot take the new case cleanly, say why in the PR before adding another.
 - **Build for the long term.** Make durable architectural decisions. Do not accept a stopgap that
   only works for now and is meant to be replaced later.
 - **Surgical changes.** Every changed line should trace to the request — but it's fine to refactor
